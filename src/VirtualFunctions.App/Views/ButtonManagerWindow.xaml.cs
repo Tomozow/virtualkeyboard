@@ -19,6 +19,13 @@ public partial class ButtonManagerWindow : Window
         viewModel.Confirm = message =>
             MessageBox.Show(this, message, "ボタンマネージャ", MessageBoxButton.YesNo, MessageBoxImage.Question)
                 == MessageBoxResult.Yes;
+        viewModel.PickWindowInteraction = () =>
+        {
+            var picker = new WindowPickerDialog { Owner = this };
+            return picker.ShowDialog() == true
+                ? (picker.SelectedPattern, picker.SelectedTarget)
+                : null;
+        };
         viewModel.EditButtonInteraction = definition =>
         {
             var editViewModel = new ButtonEditViewModel(definition);

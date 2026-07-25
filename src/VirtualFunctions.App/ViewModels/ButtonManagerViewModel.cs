@@ -37,6 +37,9 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
     /// <summary>Set by the window: yes/no confirmation.</summary>
     public Func<string, bool>? Confirm { get; set; }
 
+    /// <summary>Set by the window: shows the running-window picker; null = cancelled.</summary>
+    public Func<(string Pattern, BindingTarget Target)?>? PickWindowInteraction { get; set; }
+
     public ObservableCollection<string> PresetNames { get; } = [];
 
     public ObservableCollection<ButtonDefinition> Buttons { get; } = [];
@@ -81,6 +84,31 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
     {
         _config.Settings.AppBindingEnabled = value;
         _config.ScheduleSave();
+    }
+
+    /// <summary>
+    /// Fills the binding from a picked running window. The picker reads windows through
+    /// the same WindowInfoProvider as the foreground watcher, so the value is stored as
+    /// an Exact match that cannot drift from what the watcher reports.
+    /// </summary>
+    [RelayCommand]
+    private void PickBindingWindow()
+    {
+        if (_selected is null)
+        {
+            return;
+        }
+
+        (string Pattern, BindingTarget Target)? picked = PickWindowInteraction?.Invoke();
+        if (picked is null)
+        {
+            return;
+        }
+
+        BindingTarget = picked.Value.Target;
+        BindingMatch = BindingMatch.Exact;
+        BindingPattern = picked.Value.Pattern;
+        BindingEnabled = true;
     }
 
     partial void OnBindingEnabledChanged(bool value) => SaveBinding();

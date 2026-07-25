@@ -12,6 +12,10 @@ GetWindowThreadProcessId
 SetWinEventHook
 UnhookWinEvent
 IsWindow
+EnumWindows
+IsWindowVisible
+DwmGetWindowAttribute
+DWMWINDOWATTRIBUTE
 WINDOW_EX_STYLE
 EVENT_SYSTEM_FOREGROUND
 WINEVENT_OUTOFCONTEXT

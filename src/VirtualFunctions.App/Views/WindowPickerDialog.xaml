@@ -1,0 +1,49 @@
+<Window x:Class="VirtualFunctions.App.Views.WindowPickerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:binding="clr-namespace:VirtualFunctions.Core.Binding;assembly=VirtualFunctions.Core"
+        Title="実行中のアプリから選択"
+        Width="640"
+        Height="460"
+        MinWidth="520"
+        MinHeight="360"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListView x:Name="WindowList"
+                  Grid.Row="0"
+                  MouseDoubleClick="OnListDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="プロセス名" Width="140"
+                                    DisplayMemberBinding="{Binding ProcessName}" />
+                    <GridViewColumn Header="ウィンドウタイトル" Width="300"
+                                    DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header="クラス名" Width="140"
+                                    DisplayMemberBinding="{Binding ClassName}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <GroupBox Grid.Row="1" Header="一致対象として使う値" Margin="0,8,0,0" Padding="8">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="TargetProcess" Content="プロセス名（推奨）" IsChecked="True" Margin="0,0,12,0" />
+                <RadioButton x:Name="TargetTitle" Content="ウィンドウタイトル" Margin="0,0,12,0" />
+                <RadioButton x:Name="TargetClass" Content="クラス名" />
+            </StackPanel>
+        </GroupBox>
+
+        <DockPanel Grid.Row="2" Margin="0,10,0,0">
+            <Button DockPanel.Dock="Left" Width="90" Content="更新" Click="OnRefresh" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="90" Margin="0,0,8,0" Content="OK" IsDefault="True" Click="OnOk" />
+                <Button Width="90" Content="キャンセル" IsCancel="True" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

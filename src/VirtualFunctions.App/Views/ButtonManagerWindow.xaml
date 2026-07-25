@@ -94,6 +94,11 @@
                     <CheckBox Content="このプリセットを連動させる"
                               Margin="0,0,0,6"
                               IsChecked="{Binding BindingEnabled}" />
+                    <Button Margin="0,0,0,8"
+                            Padding="8,4"
+                            HorizontalAlignment="Stretch"
+                            Content="実行中のアプリから選択..."
+                            Command="{Binding PickBindingWindowCommand}" />
                     <TextBlock Text="一致パターン:" Margin="0,0,0,2" />
                     <TextBox Margin="0,0,0,6"
                              Text="{Binding BindingPattern, UpdateSourceTrigger=PropertyChanged, Delay=300}"
