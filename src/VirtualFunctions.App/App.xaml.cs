@@ -17,6 +17,8 @@ public partial class App : Application
 {
     private Mutex? _singleInstanceMutex;
     private ConfigService? _config;
+    private ForegroundWatcherService? _watcher;
+    private AppBindingService? _appBinding;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -78,7 +80,10 @@ public partial class App : Application
 
         ThemeService.Apply(_config.Settings.Window.Theme);
 
-        var keySender = new KeySenderService();
+        _watcher = new ForegroundWatcherService();
+        _appBinding = new AppBindingService(_config, presetService, _watcher);
+
+        var keySender = new KeySenderService(_watcher);
         var viewModel = new FloatingKeyboardViewModel(_config, presetService, keySender);
 
         ButtonManagerWindow? managerWindow = null;
@@ -96,11 +101,14 @@ public partial class App : Application
 
         var window = new FloatingKeyboardWindow(viewModel, _config);
         window.Show();
+        _watcher.Start();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
         Log.Information("Virtual Functions exiting");
+        _appBinding?.Dispose();
+        _watcher?.Dispose();
         _config?.Dispose();
         Log.CloseAndFlush();
         _singleInstanceMutex?.Dispose();

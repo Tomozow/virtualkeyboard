@@ -1,9 +1,11 @@
 using System.Runtime.InteropServices;
 using Serilog;
 using VirtualFunctions.Core.Abstractions;
+using VirtualFunctions.Core.Binding;
 using VirtualFunctions.Core.Input;
 using VirtualFunctions.Core.Models;
 using Windows.Win32;
+using Windows.Win32.Foundation;
 using Windows.Win32.UI.Input.KeyboardAndMouse;
 
 namespace VirtualFunctions.App.Interop;
@@ -11,6 +13,9 @@ namespace VirtualFunctions.App.Interop;
 /// <summary>
 /// Injects keystrokes with a single SendInput call:
 /// modifiers down → main key down/up → modifiers up (reverse order).
+/// The floating strip never takes focus (WS_EX_NOACTIVATE), so input lands on the
+/// user's window directly; the only fallback is when one of our own windows
+/// (e.g. the Button Manager) holds the foreground.
 /// </summary>
 public sealed class KeySenderService : IKeySender
 {
@@ -19,9 +24,17 @@ public sealed class KeySenderService : IKeySender
     private const ushort VkMenu = 0x12;
     private const ushort VkLWin = 0x5B;
 
+    private readonly IForegroundMonitor? _monitor;
+
+    public KeySenderService(IForegroundMonitor? monitor = null)
+    {
+        _monitor = monitor;
+    }
+
     public bool Send(KeyStroke stroke)
     {
         ArgumentNullException.ThrowIfNull(stroke);
+        EnsureExternalFocus();
 
         var inputs = new List<INPUT>(8);
         ushort[] modifierVks = [.. EnumerateModifierVks(stroke.Modifiers)];
@@ -50,6 +63,32 @@ public sealed class KeySenderService : IKeySender
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// If one of our own windows is foreground, restore the last external window
+    /// before injecting (waits ≤200 ms for the switch to land).
+    /// </summary>
+    private void EnsureExternalFocus()
+    {
+        HWND foreground = PInvoke.GetForegroundWindow();
+        if (foreground == HWND.Null || !WindowInfoProvider.BelongsToThisProcess(foreground))
+        {
+            return;
+        }
+
+        ForegroundWindowInfo? target = _monitor?.LastExternalWindow;
+        if (target is null || !PInvoke.IsWindow((HWND)target.Hwnd))
+        {
+            Log.Warning("Own window has focus and no external target is known — key may go nowhere");
+            return;
+        }
+
+        PInvoke.SetForegroundWindow((HWND)target.Hwnd);
+        for (int i = 0; i < 10 && PInvoke.GetForegroundWindow() != (HWND)target.Hwnd; i++)
+        {
+            Thread.Sleep(20);
+        }
     }
 
     private static IEnumerable<ushort> EnumerateModifierVks(KeyModifiers modifiers)
