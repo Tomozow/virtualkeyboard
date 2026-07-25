@@ -33,4 +33,11 @@
     <Resource Include="Assets\icon.ico" />
   </ItemGroup>
 
+  <!-- Debug only: stage the real v1 files next to the exe so the one-time migration
+       can be exercised during development. Never shipped. -->
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <None Include="..\..\config.json" Link="config.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\presets\*.json" LinkBase="presets" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

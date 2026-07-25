@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\src\VirtualFunctions.Core\VirtualFunctions.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="TestData\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
