@@ -1,0 +1,202 @@
+{
+  "name": "default",
+  "description": "デフォルト設定",
+  "buttons": [
+    {
+      "key": "F13",
+      "label": "F13",
+      "icon": "F13",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F14",
+      "label": "F14",
+      "icon": "F14",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F15",
+      "label": "F15",
+      "icon": "F15",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F16",
+      "label": "F16",
+      "icon": "F16",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F17",
+      "label": "F17",
+      "icon": "F17",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F18",
+      "label": "F18",
+      "icon": "F18",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F19",
+      "label": "F19",
+      "icon": "F19",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F20",
+      "label": "F21",
+      "icon": "F20",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F21",
+      "label": "F21",
+      "icon": "F21",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F22",
+      "label": "F22",
+      "icon": "F22",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F23",
+      "label": "F23",
+      "icon": "F23",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    },
+    {
+      "key": "F24",
+      "label": "F24",
+      "icon": "F24",
+      "color": "transparent",
+      "toggleHighlight": false,
+      "highlightColor": "#d1d5db",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    }
+  ],
+  "settings": {
+    "layoutDirection": "horizontal",
+    "buttonsPerRow": 6,
+    "iconSize": 38,
+    "darkMode": false,
+    "showTitlebar": true
+  },
+  "appBinding": {
+    "enabled": true,
+    "windowName": "",
+    "matchTarget": "windowTitle",
+    "matchType": "partial",
+    "priority": 1
+  },
+  "created": "2025-08-27T20:10:05.438581",
+  "modified": "2025-09-01T11:43:04.840693"
+}

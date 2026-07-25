@@ -1,0 +1,24 @@
+# .NET build outputs
+bin/
+obj/
+publish/
+*.user
+.vs/
+
+# Runtime logs / local state
+logs/
+*.log
+debug_log.txt*
+
+# Python legacy (kept as reference only)
+__pycache__/
+*.pyc
+
+# Heavy legacy artifacts — kept on disk, excluded from git
+old/virtualkeyboard_base/
+old/**/*.zip
+old/**/venv/
+old/**/build/
+old/**/dist/
+old/**/cache/
+old/**/emoji_cache/

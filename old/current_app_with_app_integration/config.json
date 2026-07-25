@@ -1,0 +1,260 @@
+{
+  "hotkeys": {
+    "set1": {
+      "targetKeys": [
+        "F13",
+        "F14",
+        "F15",
+        "F16",
+        "F17",
+        "F18"
+      ],
+      "modifiers": {
+        "shift": false,
+        "ctrl": false,
+        "alt": false,
+        "space": false
+      },
+      "enabled": false
+    },
+    "set2": {
+      "targetKeys": [
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "F24"
+      ],
+      "modifiers": {
+        "shift": false,
+        "ctrl": false,
+        "alt": false,
+        "space": false
+      },
+      "enabled": false
+    }
+  },
+  "triggerKeys": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6"
+  ],
+  "focusRestore": {
+    "enabled": true,
+    "method": "enhanced",
+    "delay": 50,
+    "debug": false
+  },
+  "floatingWindow": {
+    "enabled": true,
+    "position": {
+      "x": 2363,
+      "y": 2716
+    },
+    "buttons": [
+      {
+        "key": "F13",
+        "label": "F13",
+        "icon": "↔",
+        "color": "transparent",
+        "toggleHighlight": true,
+        "highlightColor": "#d1d5db",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F14",
+        "label": "",
+        "icon": "⇅",
+        "color": "transparent",
+        "toggleHighlight": true,
+        "highlightColor": "#fef3c7",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F15",
+        "label": "F15",
+        "icon": "🟡",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F16",
+        "label": "F16",
+        "icon": "[+]",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "#fef3c7",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F17",
+        "label": "F17",
+        "icon": "⛳",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F18",
+        "label": "F18",
+        "icon": "🎦",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F19",
+        "label": "F19",
+        "icon": "🟫",
+        "color": "transparent",
+        "toggleHighlight": true,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F21",
+        "label": "F21",
+        "icon": "◁",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F22",
+        "label": "F22",
+        "icon": "🔰",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F23",
+        "label": "F23",
+        "icon": "▶",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "#d1d5db",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F24",
+        "label": "F24",
+        "icon": "💾",
+        "color": "transparent",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      },
+      {
+        "key": "F20",
+        "label": "F20",
+        "icon": "🧺",
+        "color": "#9ca3af",
+        "toggleHighlight": false,
+        "highlightColor": "",
+        "modifiers": {
+          "ctrl": false,
+          "shift": false,
+          "alt": false,
+          "win": false
+        },
+        "description": ""
+      }
+    ],
+    "layout": {
+      "buttonsPerRow": 20,
+      "buttonSize": {
+        "width": 30,
+        "height": 30
+      },
+      "iconSize": 38
+    },
+    "layoutDirection": "vertical",
+    "darkMode": false,
+    "showTitlebar": false,
+    "showOnStartup": false,
+    "delayInputMode": false,
+    "delayTime": 1000,
+    "tooltipMode": "key",
+    "displayMode": "mini"
+  },
+  "appearance": {
+    "mode": "Light"
+  }
+}

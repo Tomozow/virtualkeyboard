@@ -1,0 +1,37 @@
+{
+  "name": "test",
+  "description": "",
+  "buttons": [
+    {
+      "key": "F13",
+      "label": "新規",
+      "icon": "🔘",
+      "color": "default",
+      "toggleHighlight": false,
+      "highlightColor": "",
+      "modifiers": {
+        "ctrl": false,
+        "shift": false,
+        "alt": false,
+        "win": false
+      },
+      "description": ""
+    }
+  ],
+  "settings": {
+    "layoutDirection": "horizontal",
+    "buttonsPerRow": 20,
+    "iconSize": 38,
+    "darkMode": false,
+    "showTitlebar": false
+  },
+  "appBinding": {
+    "enabled": true,
+    "windowName": "chrome.exe",
+    "matchTarget": "processName",
+    "matchType": "partial",
+    "priority": 1
+  },
+  "created": "2025-08-27T21:13:37.596826",
+  "modified": "2025-08-28T17:20:03.502304"
+}
