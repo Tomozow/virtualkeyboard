@@ -80,6 +80,20 @@ public partial class App : Application
 
         var keySender = new KeySenderService();
         var viewModel = new FloatingKeyboardViewModel(_config, presetService, keySender);
+
+        ButtonManagerWindow? managerWindow = null;
+        viewModel.OpenManagerRequested = () =>
+        {
+            if (managerWindow is { IsLoaded: true })
+            {
+                managerWindow.Activate();
+                return;
+            }
+
+            managerWindow = new ButtonManagerWindow(new ButtonManagerViewModel(_config, presetService));
+            managerWindow.Show();
+        };
+
         var window = new FloatingKeyboardWindow(viewModel, _config);
         window.Show();
     }

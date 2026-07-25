@@ -63,6 +63,8 @@
             BorderThickness="1">
         <Border.ContextMenu>
             <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                <MenuItem Header="ボタンマネージャ..." Command="{Binding OpenManagerCommand}" />
+                <Separator />
                 <MenuItem Header="レイアウト切替（横 / 縦）" Command="{Binding ToggleLayoutCommand}" />
                 <MenuItem Header="テーマ切替（ライト / ダーク）" Command="{Binding ToggleThemeCommand}" />
                 <Separator />

@@ -35,6 +35,9 @@ public sealed partial class FloatingKeyboardViewModel : ObservableObject
 
     public ObservableCollection<KeyButtonViewModel> Buttons { get; } = [];
 
+    /// <summary>Set by the composition root: opens (or activates) the Button Manager window.</summary>
+    public Action? OpenManagerRequested { get; set; }
+
     [ObservableProperty]
     public partial Orientation PanelOrientation { get; set; }
 
@@ -75,6 +78,9 @@ public sealed partial class FloatingKeyboardViewModel : ObservableObject
         _config.ScheduleSave();
         UpdateLayout();
     }
+
+    [RelayCommand]
+    private void OpenManager() => OpenManagerRequested?.Invoke();
 
     [RelayCommand]
     private static void Exit() => Application.Current.Shutdown();

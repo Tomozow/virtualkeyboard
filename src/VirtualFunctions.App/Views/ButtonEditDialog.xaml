@@ -1,0 +1,142 @@
+<Window x:Class="VirtualFunctions.App.Views.ButtonEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:VirtualFunctions.App.ViewModels"
+        xmlns:models="clr-namespace:VirtualFunctions.Core.Models;assembly=VirtualFunctions.Core"
+        Title="ボタン編集"
+        Width="480"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        d:DataContext="{d:DesignInstance Type=vm:ButtonEditViewModel}"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,4" />
+            <Setter Property="Padding" Value="8" />
+        </Style>
+    </Window.Resources>
+    <StackPanel Margin="12">
+        <GroupBox Header="キー">
+            <StackPanel>
+                <DockPanel>
+                    <ToggleButton x:Name="CaptureToggle"
+                                  DockPanel.Dock="Right"
+                                  Margin="6,0,0,0"
+                                  Padding="8,2"
+                                  Content="キー入力で設定"
+                                  IsChecked="{Binding IsCapturingKey}" />
+                    <ComboBox IsEditable="True"
+                              ItemsSource="{Binding SpecialKeyNames}"
+                              Text="{Binding KeyName, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+                <TextBlock Margin="0,4,0,0"
+                           FontSize="11"
+                           Foreground="Gray"
+                           Text="単一キー名（F13, 変換 など）または組み合わせ（Ctrl+C）。「キー入力で設定」中は物理キーを押すと反映されます。"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="表示">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,4" VerticalAlignment="Center" Text="ラベル:" />
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                         Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,8,4" VerticalAlignment="Center" Text="アイコン:" />
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,4">
+                    <RadioButton Content="テキスト" Margin="0,0,8,0" VerticalAlignment="Center"
+                                 IsChecked="{Binding IconKind, Converter={StaticResource EnumEquals}, ConverterParameter={x:Static models:IconKind.Text}}" />
+                    <RadioButton Content="絵文字" Margin="0,0,8,0" VerticalAlignment="Center"
+                                 IsChecked="{Binding IconKind, Converter={StaticResource EnumEquals}, ConverterParameter={x:Static models:IconKind.Emoji}}" />
+                    <RadioButton Content="画像" Margin="0,0,8,0" VerticalAlignment="Center"
+                                 IsChecked="{Binding IconKind, Converter={StaticResource EnumEquals}, ConverterParameter={x:Static models:IconKind.Image}}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,8,4" VerticalAlignment="Center" Text="値:" />
+                <DockPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,4">
+                    <Button DockPanel.Dock="Right" Margin="6,0,0,0" Padding="8,2" Content="参照..."
+                            Click="OnBrowseImage" />
+                    <TextBox FontFamily="Segoe UI, Segoe UI Emoji"
+                             Text="{Binding IconValue, UpdateSourceTrigger=PropertyChanged}" />
+                </DockPanel>
+
+                <ItemsControl Grid.Row="3" Grid.Column="1" ItemsSource="{Binding EmojiPalette}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Width="28" Height="26" Margin="1" Padding="0"
+                                    FontFamily="Segoe UI Emoji"
+                                    Content="{Binding}"
+                                    Click="OnEmojiPicked" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="色・動作">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,8,4" VerticalAlignment="Center" Text="背景色:" />
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                         Text="{Binding Background, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="#RRGGBB 形式または色名。空欄でテーマ既定色。" />
+
+                <CheckBox Grid.Row="1" Grid.Column="1" Margin="0,2,0,4"
+                          Content="トグルボタン（クリックでON/OFFをラッチ）"
+                          IsChecked="{Binding ToggleEnabled}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,8,4" VerticalAlignment="Center" Text="ラッチ色:" />
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                         Text="{Binding ToggleColor, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding ToggleEnabled}" />
+
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,8,0" VerticalAlignment="Center" Text="修飾キー:" />
+                    <CheckBox Content="Ctrl" Margin="0,0,8,0" IsChecked="{Binding ModCtrl}" />
+                    <CheckBox Content="Shift" Margin="0,0,8,0" IsChecked="{Binding ModShift}" />
+                    <CheckBox Content="Alt" Margin="0,0,8,0" IsChecked="{Binding ModAlt}" />
+                    <CheckBox Content="Win" IsChecked="{Binding ModWin}" />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="説明（ツールチップに追加表示）">
+            <TextBox Text="{Binding Tooltip, UpdateSourceTrigger=PropertyChanged}" />
+        </GroupBox>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+            <Button Width="90" Margin="0,0,8,0" Content="OK" IsDefault="True" Click="OnOk" />
+            <Button Width="90" Content="キャンセル" IsCancel="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>
