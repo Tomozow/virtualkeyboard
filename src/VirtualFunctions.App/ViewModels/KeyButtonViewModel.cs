@@ -2,7 +2,7 @@ using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Serilog;
-using VirtualFunctions.Core.Abstractions;
+using VirtualFunctions.App.Services;
 using VirtualFunctions.Core.Input;
 using VirtualFunctions.Core.Models;
 
@@ -11,13 +11,13 @@ namespace VirtualFunctions.App.ViewModels;
 /// <summary>One button on the floating strip, built from a ButtonDefinition.</summary>
 public sealed partial class KeyButtonViewModel : ObservableObject
 {
-    private readonly IKeySender _keySender;
+    private readonly KeyDispatchService _dispatcher;
 
-    public KeyButtonViewModel(ButtonDefinition definition, IKeySender keySender, TooltipMode tooltipMode)
+    public KeyButtonViewModel(ButtonDefinition definition, KeyDispatchService dispatcher, TooltipMode tooltipMode)
     {
         ArgumentNullException.ThrowIfNull(definition);
         Definition = definition;
-        _keySender = keySender;
+        _dispatcher = dispatcher;
         TooltipText = BuildTooltip(definition, tooltipMode);
     }
 
@@ -63,8 +63,7 @@ public sealed partial class KeyButtonViewModel : ObservableObject
             return;
         }
 
-        bool ok = _keySender.Send(stroke);
-        Log.Information("Key {KeySpec} mods={Mods} sent={Ok}", Definition.Key, Definition.Modifiers, ok);
+        _dispatcher.Dispatch(stroke, Label);
     }
 
     private static string? BuildTooltip(ButtonDefinition definition, TooltipMode mode)

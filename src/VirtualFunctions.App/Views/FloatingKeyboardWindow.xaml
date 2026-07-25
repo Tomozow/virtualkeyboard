@@ -20,10 +20,7 @@
         <conv:ColorStringToBrushConverter x:Key="ColorToBrush" />
         <Style x:Key="KeyButtonStyle" TargetType="Button">
             <Setter Property="Focusable" Value="False" />
-            <Setter Property="Width" Value="52" />
-            <Setter Property="Height" Value="42" />
             <Setter Property="Margin" Value="3" />
-            <Setter Property="FontSize" Value="13" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrush}" />
             <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}" />
@@ -58,13 +55,28 @@
     <Border x:Name="RootBorder"
             Padding="6"
             CornerRadius="8"
-            Background="{DynamicResource WindowBackgroundBrush}"
-            BorderBrush="{DynamicResource WindowBorderBrush}"
-            BorderThickness="1">
+            Background="{DynamicResource WindowBackgroundBrush}">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Style.Triggers>
+                    <!-- Armed delay-input mode is signalled by a highlighted frame (floating.py:1683-1696). -->
+                    <DataTrigger Binding="{Binding IsDelayModeEnabled}" Value="True">
+                        <Setter Property="BorderBrush" Value="{DynamicResource DelayArmedBorderBrush}" />
+                        <Setter Property="BorderThickness" Value="2" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
         <Border.ContextMenu>
             <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
                 <MenuItem Header="ボタンマネージャ..." Command="{Binding OpenManagerCommand}" />
                 <Separator />
+                <MenuItem Header="遅延入力モード"
+                          Command="{Binding ToggleDelayModeCommand}"
+                          IsChecked="{Binding IsDelayModeEnabled, Mode=OneWay}" />
+                <MenuItem Header="表示モード切替（通常 / ミニ）" Command="{Binding ToggleDisplayModeCommand}" />
                 <MenuItem Header="レイアウト切替（横 / 縦）" Command="{Binding ToggleLayoutCommand}" />
                 <MenuItem Header="テーマ切替（ライト / ダーク）" Command="{Binding ToggleThemeCommand}" />
                 <Separator />
@@ -85,6 +97,9 @@
                     <Button Style="{StaticResource KeyButtonStyle}"
                             Command="{Binding SendCommand}"
                             Background="{Binding CurrentBackground, Converter={StaticResource ColorToBrush}}"
+                            Width="{Binding DataContext.ButtonWidth, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            Height="{Binding DataContext.ButtonHeight, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            FontSize="{Binding DataContext.ButtonFontSize, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                             ToolTip="{Binding TooltipText}"
                             ToolTipService.InitialShowDelay="500">
                         <Grid>

@@ -19,6 +19,7 @@ public partial class App : Application
     private ConfigService? _config;
     private ForegroundWatcherService? _watcher;
     private AppBindingService? _appBinding;
+    private KeyDispatchService? _dispatcher;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -84,7 +85,8 @@ public partial class App : Application
         _appBinding = new AppBindingService(_config, presetService, _watcher);
 
         var keySender = new KeySenderService(_watcher);
-        var viewModel = new FloatingKeyboardViewModel(_config, presetService, keySender);
+        _dispatcher = new KeyDispatchService(_config, keySender);
+        var viewModel = new FloatingKeyboardViewModel(_config, presetService, _dispatcher);
 
         ButtonManagerWindow? managerWindow = null;
         viewModel.OpenManagerRequested = () =>
@@ -100,6 +102,25 @@ public partial class App : Application
         };
 
         var window = new FloatingKeyboardWindow(viewModel, _config);
+
+        CountdownPopup? popup = null;
+        _dispatcher.CountdownTick += (label, remaining) =>
+        {
+            if (popup is null)
+            {
+                popup = new CountdownPopup();
+                popup.Show();
+            }
+
+            popup.Update(label, remaining);
+            popup.PlaceAbove(window);
+        };
+        _dispatcher.CountdownEnded += () =>
+        {
+            popup?.Close();
+            popup = null;
+        };
+
         window.Show();
         _watcher.Start();
     }
@@ -107,6 +128,7 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         Log.Information("Virtual Functions exiting");
+        _dispatcher?.Dispose();
         _appBinding?.Dispose();
         _watcher?.Dispose();
         _config?.Dispose();

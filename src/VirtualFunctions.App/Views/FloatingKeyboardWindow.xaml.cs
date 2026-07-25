@@ -21,7 +21,14 @@ public partial class FloatingKeyboardWindow : Window
 
         (Left, Top) = ClampToVirtualScreen(_config.Settings.Window.X, _config.Settings.Window.Y);
         ContentRendered += (_, _) => _trackPosition = true;
+
+        // A monitor being unplugged must not strand the strip off-screen.
+        Microsoft.Win32.SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        Closed += (_, _) => Microsoft.Win32.SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
     }
+
+    private void OnDisplaySettingsChanged(object? sender, EventArgs e)
+        => Dispatcher.Invoke(() => (Left, Top) = ClampToVirtualScreen(Left, Top));
 
     protected override void OnSourceInitialized(EventArgs e)
     {
