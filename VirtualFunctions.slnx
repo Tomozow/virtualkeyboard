@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VirtualFunctions.App/VirtualFunctions.App.csproj" />
+    <Project Path="src/VirtualFunctions.Core/VirtualFunctions.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VirtualFunctions.Core.Tests/VirtualFunctions.Core.Tests.csproj" />
+  </Folder>
+</Solution>

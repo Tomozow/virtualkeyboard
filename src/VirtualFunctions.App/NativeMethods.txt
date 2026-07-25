@@ -1,0 +1,17 @@
+SendInput
+GetForegroundWindow
+SetForegroundWindow
+GetWindowLongPtr
+SetWindowLongPtr
+SetLayeredWindowAttributes
+MapVirtualKey
+GetWindowText
+GetWindowTextLength
+GetClassName
+GetWindowThreadProcessId
+SetWinEventHook
+UnhookWinEvent
+IsWindow
+WINDOW_EX_STYLE
+EVENT_SYSTEM_FOREGROUND
+WINEVENT_OUTOFCONTEXT
