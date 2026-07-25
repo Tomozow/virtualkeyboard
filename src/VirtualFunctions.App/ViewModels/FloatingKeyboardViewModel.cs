@@ -87,10 +87,13 @@ public sealed partial class FloatingKeyboardViewModel : ObservableObject
     [RelayCommand]
     private void ToggleLayout()
     {
-        WindowSettings window = _config.Settings.Window;
-        window.LayoutDirection = window.LayoutDirection == LayoutDirection.Horizontal
-            ? LayoutDirection.Vertical
-            : LayoutDirection.Horizontal;
+        // Flips the *effective* direction — a per-preset override (every migrated
+        // v1 preset has one) must follow the toggle, not swallow it.
+        if (LayoutResolver.ToggleDirection(_presets.Active, _config.Settings.Window))
+        {
+            _presets.Repository.Save(_presets.Active);
+        }
+
         _config.ScheduleSave();
         UpdateLayout();
     }
@@ -127,8 +130,8 @@ public sealed partial class FloatingKeyboardViewModel : ObservableObject
 
     private void UpdateLayout()
     {
-        int perRow = _presets.Active.Layout.ButtonsPerRow ?? _config.Settings.Window.ButtonsPerRow;
-        LayoutDirection direction = _presets.Active.Layout.Direction ?? _config.Settings.Window.LayoutDirection;
+        int perRow = LayoutResolver.EffectiveButtonsPerRow(_presets.Active, _config.Settings.Window);
+        LayoutDirection direction = LayoutResolver.EffectiveDirection(_presets.Active, _config.Settings.Window);
 
         double slotWidth = ButtonWidth + SlotMargin;
         double slotHeight = ButtonHeight + SlotMargin;
