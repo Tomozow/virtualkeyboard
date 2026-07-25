@@ -15,10 +15,14 @@ namespace VirtualFunctions.App.ViewModels;
 /// </summary>
 public sealed partial class ButtonManagerViewModel : ObservableObject
 {
+    /// <summary>Combo entry meaning "no fallback — keep the current preset".</summary>
+    public const string NoFallbackLabel = "（切り替えない）";
+
     private readonly ConfigService _config;
     private readonly PresetService _presets;
     private Preset? _selected;
     private bool _loadingBinding;
+    private bool _loadingFallback;
 
     public ButtonManagerViewModel(ConfigService config, PresetService presets)
     {
@@ -42,6 +46,9 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
 
     public ObservableCollection<string> PresetNames { get; } = [];
 
+    /// <summary>"（切り替えない）" followed by all preset names.</summary>
+    public ObservableCollection<string> FallbackOptions { get; } = [];
+
     public ObservableCollection<ButtonDefinition> Buttons { get; } = [];
 
     [ObservableProperty]
@@ -52,6 +59,9 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
 
     [ObservableProperty]
     public partial bool AppBindingGloballyEnabled { get; set; }
+
+    [ObservableProperty]
+    public partial string SelectedFallbackOption { get; set; } = NoFallbackLabel;
 
     [ObservableProperty]
     public partial bool BindingEnabled { get; set; }
@@ -83,6 +93,17 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
     partial void OnAppBindingGloballyEnabledChanged(bool value)
     {
         _config.Settings.AppBindingEnabled = value;
+        _config.ScheduleSave();
+    }
+
+    partial void OnSelectedFallbackOptionChanged(string value)
+    {
+        if (_loadingFallback)
+        {
+            return;
+        }
+
+        _config.Settings.AppBindingFallbackPreset = value == NoFallbackLabel ? string.Empty : value;
         _config.ScheduleSave();
     }
 
@@ -268,14 +289,15 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
             return;
         }
 
-        string? name = PromptForName?.Invoke("プリセット名の変更", "新しい名前:", _selected.Name);
-        if (name is null || name == _selected.Name)
+        string oldName = _selected.Name;
+        string? name = PromptForName?.Invoke("プリセット名の変更", "新しい名前:", oldName);
+        if (name is null || name == oldName)
         {
             return;
         }
 
         bool wasActive = IsSelectedPresetActive;
-        if (!_presets.Repository.Rename(_selected.Name, name))
+        if (!_presets.Repository.Rename(oldName, name))
         {
             return;
         }
@@ -283,6 +305,12 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
         if (wasActive)
         {
             _presets.Activate(name);
+        }
+
+        if (string.Equals(_config.Settings.AppBindingFallbackPreset, oldName, StringComparison.OrdinalIgnoreCase))
+        {
+            _config.Settings.AppBindingFallbackPreset = name;
+            _config.ScheduleSave();
         }
 
         RefreshPresetNames(name);
@@ -303,13 +331,19 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
 
         string deleted = _selected.Name;
         _presets.Repository.Delete(deleted);
-        string fallback = _presets.Repository.All.First().Name;
+        string remaining = _presets.Repository.All.First().Name;
         if (string.Equals(_presets.Active.Name, deleted, StringComparison.OrdinalIgnoreCase))
         {
-            _presets.Activate(fallback);
+            _presets.Activate(remaining);
         }
 
-        RefreshPresetNames(fallback);
+        if (string.Equals(_config.Settings.AppBindingFallbackPreset, deleted, StringComparison.OrdinalIgnoreCase))
+        {
+            _config.Settings.AppBindingFallbackPreset = string.Empty;
+            _config.ScheduleSave();
+        }
+
+        RefreshPresetNames(remaining);
     }
 
     // Import/Export are handled by the window (file dialogs) via these entry points.
@@ -405,6 +439,26 @@ public sealed partial class ButtonManagerViewModel : ObservableObject
 
         SelectedPresetName = PresetNames.FirstOrDefault(n => string.Equals(n, select, StringComparison.OrdinalIgnoreCase))
             ?? PresetNames.FirstOrDefault();
+
+        _loadingFallback = true;
+        try
+        {
+            FallbackOptions.Clear();
+            FallbackOptions.Add(NoFallbackLabel);
+            foreach (string name in PresetNames)
+            {
+                FallbackOptions.Add(name);
+            }
+
+            string configured = _config.Settings.AppBindingFallbackPreset;
+            SelectedFallbackOption = FallbackOptions.FirstOrDefault(
+                    n => string.Equals(n, configured, StringComparison.OrdinalIgnoreCase))
+                ?? NoFallbackLabel;
+        }
+        finally
+        {
+            _loadingFallback = false;
+        }
     }
 
     private void SaveBinding()

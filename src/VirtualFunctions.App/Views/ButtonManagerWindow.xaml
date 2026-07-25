@@ -90,6 +90,12 @@
                               Margin="0,0,0,8"
                               IsChecked="{Binding AppBindingGloballyEnabled}"
                               ToolTip="前面ウィンドウに応じてプリセットを自動切替します" />
+                    <TextBlock Text="どれにも一致しない時:" Margin="0,0,0,2" />
+                    <ComboBox Margin="0,0,0,8"
+                              ItemsSource="{Binding FallbackOptions}"
+                              SelectedItem="{Binding SelectedFallbackOption}"
+                              IsEnabled="{Binding AppBindingGloballyEnabled}"
+                              ToolTip="前面アプリがどの連動設定にも一致しない時に表示するプリセット" />
                     <Separator Margin="0,0,0,8" />
                     <CheckBox Content="このプリセットを連動させる"
                               Margin="0,0,0,6"

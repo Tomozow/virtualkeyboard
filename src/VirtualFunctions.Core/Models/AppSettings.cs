@@ -40,6 +40,12 @@ public sealed class AppSettings
     /// <summary>Global switch for foreground-window preset auto-switching.</summary>
     public bool AppBindingEnabled { get; set; } = true;
 
+    /// <summary>
+    /// Preset to activate when the foreground window matches no binding.
+    /// Empty = keep the current preset (no fallback).
+    /// </summary>
+    public string AppBindingFallbackPreset { get; set; } = string.Empty;
+
     public void Normalize()
     {
         DelayInput.DelayMs = Math.Clamp(DelayInput.DelayMs, MinDelayMs, MaxDelayMs);

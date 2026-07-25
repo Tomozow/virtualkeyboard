@@ -53,13 +53,26 @@ public sealed class AppBindingService : IDisposable
         }
 
         string? match = AppBindingMatcher.FindBestMatch(info, _presets.Repository.All);
-        if (match is null || string.Equals(match, _presets.Active.Name, StringComparison.OrdinalIgnoreCase))
+        bool isFallback = false;
+        if (match is null)
+        {
+            string fallback = _config.Settings.AppBindingFallbackPreset;
+            if (fallback.Length == 0 || !_presets.Repository.TryGet(fallback, out _))
+            {
+                return;
+            }
+
+            match = fallback;
+            isFallback = true;
+        }
+
+        if (string.Equals(match, _presets.Active.Name, StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
 
-        Log.Information("App-binding: {Process} / {Title} → preset {Preset}",
-            info.ProcessName, info.Title, match);
+        Log.Information("App-binding: {Process} / {Title} → preset {Preset}{Fallback}",
+            info.ProcessName, info.Title, match, isFallback ? " (fallback)" : string.Empty);
         _presets.Activate(match, persist: false);
     }
 }
