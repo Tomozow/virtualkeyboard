@@ -22,3 +22,6 @@ old/**/build/
 old/**/dist/
 old/**/cache/
 old/**/emoji_cache/
+
+# Claude Code local settings
+.claude/
