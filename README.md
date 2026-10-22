@@ -2,6 +2,8 @@
 
 Windows 用フローティング仮想キーボード。物理キーボードに存在しない F13–F24 や日本語IMEキー(変換・無変換・かな・半角/全角)、修飾キー付きコンボ(Ctrl+C など)を、作業中のアプリからフォーカスを奪わずにワンクリックで送信します。
 
+![Virtual Functions スクリーンショット](assets/screenshot.png)
+
 C#/.NET 10 + WPF による v2.0 全面書き直し版です(v1.x は Python/CustomTkinter 製 — `old/python_v1.2/` に参照用として保存)。
 
 ## 主な機能
